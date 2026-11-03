@@ -1,0 +1,223 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>BIOGENESIS — Inside the Living Cell</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Manrope:wght@400;600&display=swap" rel=stylesheet>
+<style>
+*{box-sizing:border-box;margin:0}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+html{color-scheme:dark}
+body{background:radial-gradient(120% 80% at 50% -10%,#16133f,#04050f 60%) fixed;color:#e8ecff;font:16px/1.6 Manrope,system-ui,sans-serif;overflow-x:hidden;padding-top:calc(58px + env(safe-area-inset-top,0px))}
+body.lock{overflow:hidden}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;line-height:1.05}
+h1{font-size:clamp(2.8rem,12vw,7.5rem);letter-spacing:.14em}
+h2{font-size:clamp(2.1rem,6vw,3.8rem);margin-bottom:.5rem}
+h3{font-size:1.6rem;margin:.4rem 0}
+p{color:#b8c1ea;max-width:62ch;margin:.5rem 0}
+section{min-height:100svh;padding:clamp(40px,7vh,80px) clamp(16px,5vw,72px) 48px;max-width:1400px;margin:auto}
+button{font:inherit;color:inherit;background:#ffffff0d;border:1px solid #6fd8ff44;border-radius:999px;padding:10px 16px;min-height:44px;cursor:pointer;transition:.2s}
+button:hover,button.on{background:#4de8ff26;border-color:#4de8ff}
+button:focus-visible,canvas:focus-visible,.ar:focus-visible,input:focus-visible{outline:2px solid #4de8ff;outline-offset:3px}
+#hd{position:fixed;inset:0 0 auto;z-index:20;display:flex;align-items:center;gap:8px;padding:calc(7px + env(safe-area-inset-top,0px)) 14px 7px;background:#04050fb8;backdrop-filter:blur(14px);border-bottom:1px solid #ffffff14}
+#home{font:600 .95rem 'Cormorant Garamond',serif;letter-spacing:.3em;margin-right:auto;border:0;background:none}
+#nv{display:flex;gap:2px}#nv a{padding:10px 12px;border-radius:8px;color:#9aa4cf;text-decoration:none;font-size:.85rem}#nv a.on{color:#fff;background:#4de8ff1f}
+#mb{display:none}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:30;background:linear-gradient(90deg,#4de8ff,#9b7bff,#ff5fb2)}
+@media(max-width:860px){#mb{display:block}#nv{position:fixed;top:calc(58px + env(safe-area-inset-top,0px));left:0;right:0;flex-direction:column;padding:12px;background:#080a22f5;transform:translateY(-140%);transition:.35s;max-height:70svh;overflow:auto}#nv.open{transform:none}#nv a{font-size:1.1rem;padding:14px}}
+.g{background:linear-gradient(145deg,#ffffff12,#ffffff05);border:1px solid #ffffff1c;border-radius:20px;padding:clamp(16px,2.4vw,28px);backdrop-filter:blur(10px)}
+.row{display:grid;gap:20px;margin-top:18px}
+@media(min-width:1000px){.row{grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start}}
+canvas.v{width:100%;display:block;border-radius:20px;background:#02030c;border:1px solid #ffffff1a;touch-action:pan-y}
+#dna{aspect-ratio:1/1.05}#mc,#mc2{aspect-ratio:1/1}#pl{aspect-ratio:4/3}#rep{height:200px}#cc{aspect-ratio:16/9}
+@media(min-width:700px){#mc,#mc2{aspect-ratio:16/10}#dna{aspect-ratio:5/4}}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.k{color:#4de8ff}
+details summary{cursor:pointer;color:#4de8ff;min-height:44px;display:flex;align-items:center}
+input[type=range]{width:100%;accent-color:#4de8ff;height:32px}
+.hero{display:grid;place-content:center;text-align:center;justify-items:center}
+.hero p{margin:.8rem auto}.hero .sub{font:italic 1.6rem 'Cormorant Garamond',serif;color:#7fe9ff}
+.cmp{display:grid;gap:12px}#mw.c2{grid-template-columns:1fr}
+@media(min-width:1000px){#mw.c2{grid-template-columns:1fr 1fr}}
+#mc2,#cap2,#cs{display:none}#mw.c2 #mc2,#mw.c2 #cap2,#mw.c2~* #cs{display:block}
+.cap{font:600 1.3rem 'Cormorant Garamond',serif;margin:6px 4px}
+select{background:#0a0d2a;color:inherit;border:1px solid #6fd8ff66;border-radius:12px;padding:10px;min-height:44px;font:inherit}
+.opts{display:grid;gap:10px;margin:14px 0}.opts button{border-radius:14px;text-align:left}
+.ok{background:#1fd18a33!important;border-color:#1fd18a!important}.bad{background:#ff5f7a33!important;border-color:#ff5f7a!important}.dim{opacity:.45}
+.pb{height:6px;background:#ffffff14;border-radius:9px;overflow:hidden}.pb i{display:block;height:100%;background:linear-gradient(90deg,#4de8ff,#ff5fb2);transition:.4s}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:14px}.stats b{display:block;font:500 1.7rem 'Cormorant Garamond',serif;color:#7fe9ff}
+.cells{display:flex;gap:12px;justify-content:center}.cells svg{width:min(44vw,260px);animation:in .6s}@keyframes in{from{opacity:0;transform:scale(.85)}}
+.ach{text-align:center}.rings{position:relative;height:130px}.rings i{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border:2px solid #4de8ff;border-radius:50%;animation:rg 2.4s ease-out infinite}.rings i:nth-child(2){animation-delay:.8s;border-color:#9b7bff}.rings i:nth-child(3){animation-delay:1.6s;border-color:#ff5fb2}@keyframes rg{to{transform:scale(7);opacity:0}}
+.ar{cursor:pointer;transition:stroke-width .3s}
+#intro{position:fixed;inset:0;z-index:50;background:#000;transition:opacity 1s}#ic{width:100%;height:100%;display:block}
+#it{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;opacity:0;transition:opacity 2.2s;pointer-events:none;padding:16px;text-shadow:0 0 30px #000}#it.on{opacity:1}#it.on button{pointer-events:auto}
+#skip{position:absolute;right:14px;top:calc(14px + env(safe-area-inset-top,0px))}
+.pm #nv,.pm #mb{display:none}.pm p,.pm .k{font-size:1.15rem}.pm h2{font-size:clamp(2.6rem,6vw,5rem)}.pm canvas.v{max-height:72svh}.pm details{display:none}
+footer{text-align:center;padding:30px 16px 60px;color:#7c86b5;font-size:.9rem}
+</style></head><body class=lock>
+<div id=intro><canvas id=ic></canvas><div id=it><h1>BIOGENESIS</h1><p class=sub style="font:italic 1.7rem 'Cormorant Garamond',serif;color:#7fe9ff">Inside the Living Cell</p><p style="margin:18px 0 0;font-size:.8rem;letter-spacing:.35em;text-transform:uppercase;color:#9aa4cf">Created by Hussein Khatib</p><button id=begin style="margin-top:28px">Begin the journey</button></div><button id=skip>Skip intro</button></div>
+<div id=bar></div>
+<header id=hd><button id=home aria-label="Return to the start">BIOGENESIS</button><nav id=nv aria-label=Chapters></nav><button id=pm>Present</button><button id=mb aria-expanded=false>Menu</button></header>
+<main>
+<section id=s0 class=hero data-t=Home><h1>BIOGENESIS</h1><p class=sub>Inside the Living Cell</p><p>How genetic information defines an organism, how a cell prepares to divide, and how mitosis passes a complete copy to each daughter cell. Four chapters, then a knowledge lab.</p><div class=tabs style="justify-content:center"><button class=on data-go=c1>Start the journey</button><button onclick=location.reload()>Replay intro</button></div></section>
+
+<section id=c1 data-t="1 Identity"><h2>The biological identity</h2><p>An organism’s inherited characteristics are encoded in its genetic information: DNA, organised into genes and packaged into chromosomes.</p>
+<div class=row><div class=g><h3>Explore the hierarchy</h3><div class=tabs id=hb></div><p id=ht></p>
+<details><summary>How DNA shapes inherited traits</summary><p>Genes carry instructions for proteins and RNAs. Proteins build structures and run chemistry, so the sequence of bases, together with the environment, influences an organism’s characteristics. Offspring inherit copies of DNA from their parents.</p></details>
+<h3>Genes on a chromosome</h3><div class=tabs><button class=gb data-g=0>Gene 1</button><button class=gb data-g=1>Gene 2</button><button class=gb data-g=2>Gene 3</button></div>
+<svg id=chs viewBox="0 0 130 250" width=110 height=190 role=img aria-label="Chromosome with three gene bands"><g fill="#2a2f78" stroke="#7fe9ff"><rect x=26 y=8 width=36 height=234 rx=18 /><rect x=68 y=8 width=36 height=234 rx=18 /></g><g fill="#ff5fb2"><rect id=b0 x=26 y=40 width=78 height=14 opacity=.35 /><rect id=b1 x=26 y=110 width=78 height=14 opacity=.35 /><rect id=b2 x=26 y=180 width=78 height=14 opacity=.35 /></g></svg>
+<p id=di aria-live=polite>Select a gene or tap a base in the helix.</p></div>
+<div><canvas id=dna class=v tabindex=0 aria-label="Interactive DNA double helix. Arrow keys rotate, plus and minus zoom."></canvas><div class=tabs><button id=zi aria-label="Zoom in">Zoom +</button><button id=zo aria-label="Zoom out">Zoom −</button></div></div></div></section>
+
+<section id=c2 data-t="2 Cell cycle"><h2>The cell cycle</h2><p>An ordered sequence of growth, DNA replication, preparation and division. Select a phase on the ring. Arc sizes are illustrative; real durations vary.</p>
+<div class=row><div class=g><svg id=ring viewBox="0 0 200 200" role=group aria-label="Cell cycle ring"></svg><div class=tabs><button id=pp>Play cycle</button></div></div>
+<div class=g><div id=pt></div><canvas id=pl class=v aria-label="What the cell looks like in this phase" style="max-width:340px"></canvas><p style="font-size:.85rem">C = one copy of the genome. In this model the cell has 4 chromosomes.</p></div></div>
+<div class=g style="margin-top:20px"><h3>DNA replication in S phase</h3><p>Each DNA molecule is copied into two identical molecules. Each holds one old strand (cyan, magenta) and one new strand (gold, green). Drag to scrub.</p><canvas id=rep class=v aria-label="Animated DNA replication"></canvas><input id=rp type=range min=0 max=100 value=0 aria-label="Replication progress"></div></section>
+
+<section id=c3 data-t="3 Mitosis"><h2>Mitosis, stage by stage</h2><p>DNA was already copied in S phase. Mitosis divides the nucleus; cytokinesis divides the cytoplasm. Drag, swipe or scrub the timeline, and tap the glowing hotspots.</p>
+<div class=g style="margin-top:18px"><div id=mw class=cmp><div><div class=cap id=cap1></div><canvas id=mc class=v tabindex=0 aria-label="Animated mitosis cell"></canvas></div><div><div class=cap id=cap2></div><canvas id=mc2 class=v aria-label="Comparison stage"></canvas></div></div>
+<input id=ts type=range min=0 max=500 value=0 aria-label="Mitosis timeline">
+<div class=tabs><button id=rs>Restart</button><button id=pv>Previous</button><button id=py>Play</button><button id=nx0>Next</button><button id=cmpb>Compare</button><select id=cs aria-label="Stage to compare"></select></div><div class=tabs id=chips></div>
+<h3 id=sn></h3><p id=sd></p><p id=hi class=k aria-live=polite>Tap a hotspot ring on the cell to learn what it is.</p></div></section>
+
+<section id=c4 data-t="4 Continuity"><h2>Biological continuity</h2><p>Mitosis supports growth, tissue repair and cell replacement. Daughter cells generally keep the parent’s chromosome number.</p>
+<div class=g style="margin-top:18px"><div class=tabs id=ctb></div><div id=ct class=cells></div><div class=stats id=cst></div><p id=cd></p></div></section>
+
+<section id=lab data-t="Knowledge lab"><h2>Knowledge lab</h2>
+<div class=row><div class=g id=qz></div><div class=g><h3>Challenge: name the stage</h3><canvas id=cc class=v aria-label="Unlabelled mitosis stage"></canvas><div id=co></div></div></div></section>
+
+<section id=end data-t=Conclusion><h2>Why mitosis matters</h2><p>DNA is copied once in S phase. Mitosis then separates the sister chromatids so each daughter cell receives a complete, identical set of chromosomes, and cytokinesis divides the cytoplasm.</p><p>That continuity lets one fertilised cell become a body, repair a wound and replace worn-out cells, while every cell keeps the same genetic information.</p><div class=tabs><button data-go=s0>Back to the start</button></div></section>
+</main>
+<footer>Shortcuts: N next chapter · B previous chapter · F presentation mode · Esc exit</footer>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],L=(a,b,t)=>a+(b-a)*t,K=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const R=[];let T=0;
+function reg(id,fn){const c=$('#'+id),o={c,x:c.getContext('2d'),fn,v:0,w:0,h:0,hs:[]};new IntersectionObserver(e=>o.v=e[0].isIntersecting).observe(c);new ResizeObserver(()=>{const d=Math.min(devicePixelRatio||1,2),r=c.getBoundingClientRect();o.w=r.width;o.h=r.height;c.width=r.width*d;c.height=r.height*d;o.x.setTransform(d,0,0,d,0,0)}).observe(c);R.push(o);return o}
+(function f(t){T=t/1e3;for(const o of R)if(o.v&&o.w){o.x.clearRect(0,0,o.w,o.h);o.fn(o,o.x,o.w,o.h)}requestAnimationFrame(f)})(0);
+/* intro */
+const IC=['#4de8ff','#9b7bff'],P0=[...Array(80)].map(()=>[Math.random(),Math.random(),Math.random()*.6+.2,Math.random()*6]);let I0=null;
+function helix(x,w,h,off,a){for(let px=-10;px<w+10;px+=9){const p=(px+off)*.035,s=Math.sin(p),z=Math.cos(p),y=h*.16*s;if(Math.round(px/9)%3==0){x.strokeStyle=`rgba(180,200,255,${.35*a})`;x.lineWidth=1.5;x.beginPath();x.moveTo(px,h/2+y);x.lineTo(px,h/2-y);x.stroke()}[[y,0],[-y,1]].forEach(([yy,k])=>{const q=k?-z:z;x.fillStyle=IC[k];x.globalAlpha=a*(.55+.45*q);x.beginPath();x.arc(px,h/2+yy,3+2.5*q,0,7);x.fill()})}x.globalAlpha=1}
+const io=reg('ic',(o,x,w,h)=>{if(I0==null)I0=T;const t=RM?99:T-I0,m=Math.min(w,h),cx=w/2,cy=h/2;x.fillStyle='#000';x.fillRect(0,0,w,h);
+P0.forEach(p=>{x.fillStyle=`rgba(150,200,255,${p[2]*.5*(.5+.5*Math.sin(T+p[3]))})`;x.beginPath();x.arc(p[0]*w,((p[1]*h-T*6*p[2])%h+h)%h,p[2]*2,0,7);x.fill()});
+const z=K((t-.6)/6.4),R0=m*.05*Math.pow(36,z);
+if(z<.97){const g=x.createRadialGradient(cx,cy,R0*.2,cx,cy,R0*1.6);g.addColorStop(0,'rgba(77,232,255,.28)');g.addColorStop(.6,'rgba(90,60,200,.16)');g.addColorStop(1,'transparent');x.globalAlpha=K(t/1.5)*(1-K((z-.7)/.27));x.fillStyle=g;x.beginPath();x.arc(cx,cy,R0*1.6,0,7);x.fill();x.strokeStyle='#7fe9ff';x.lineWidth=2+R0*.02;x.shadowColor='#4de8ff';x.shadowBlur=20;x.beginPath();x.arc(cx,cy,R0,0,7);x.stroke();x.shadowBlur=0;const n=K((z-.3)/.2)*(1-K((z-.62)/.2));x.fillStyle=`rgba(155,123,255,${.55*n})`;x.strokeStyle=`rgba(210,190,255,${n})`;x.beginPath();x.arc(cx,cy,R0*.38,0,7);x.fill();x.stroke();x.globalAlpha=1}
+const ha=K((z-.6)/.3);if(ha>0)helix(x,w,h,RM?0:t*70,ha);if(t>8.3)$('#it').classList.add('on')});
+function enter(){const i=$('#intro');i.style.opacity=0;document.body.classList.remove('lock');R.splice(R.indexOf(io),1);setTimeout(()=>i.remove(),1000);scrollTo(0,0)}
+$('#begin').onclick=$('#skip').onclick=enter;
+/* nav */
+const secs=$$('main>section'),nv=$('#nv');
+secs.forEach(s=>{const a=document.createElement('a');a.href='#'+s.id;a.textContent=s.dataset.t;nv.append(a)});
+const links=[...nv.children];
+new IntersectionObserver(e=>e.forEach(n=>n.isIntersecting&&links.forEach(l=>l.classList.toggle('on',l.hash=='#'+n.target.id))),{rootMargin:'-45% 0px -50% 0px'}).observe&&secs.forEach(s=>0);
+const so=new IntersectionObserver(e=>e.forEach(n=>n.isIntersecting&&links.forEach(l=>l.classList.toggle('on',l.hash=='#'+n.target.id))),{rootMargin:'-45% 0px -50% 0px'});secs.forEach(s=>so.observe(s));
+addEventListener('scroll',()=>{$('#bar').style.width=100*scrollY/Math.max(1,document.documentElement.scrollHeight-innerHeight)+'%'},{passive:true});
+$('#mb').onclick=e=>e.target.setAttribute('aria-expanded',nv.classList.toggle('open'));nv.onclick=()=>nv.classList.remove('open');
+$('#home').onclick=()=>scrollTo(0,0);
+$$('[data-go]').forEach(b=>b.onclick=()=>$('#'+b.dataset.go).scrollIntoView());
+const go=d=>secs[K(links.findIndex(l=>l.classList.contains('on'))+d,0,secs.length-1)].scrollIntoView();
+function pmT(){const on=document.body.classList.toggle('pm');$('#pm').textContent=on?'Exit':'Present'}
+$('#pm').onclick=pmT;
+addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||/INPUT|SELECT/.test(e.target.tagName)||e.target.tagName=='CANVAS')return;const k=e.key.toLowerCase(),p=document.body.classList.contains('pm');
+if(k=='n'||(p&&k=='arrowright'))go(1);else if(k=='b'||(p&&k=='arrowleft'))go(-1);else if(k=='f')pmT();else if(k=='escape'&&p)pmT()});
+/* chapter 1: DNA */
+const SEQ='ATCGGCTAAGCTTACGGATC',CP={A:'T',T:'A',C:'G',G:'C'},BN={A:'Adenine',T:'Thymine',C:'Cytosine',G:'Guanine'},BC={A:'#4de8ff',T:'#9b7bff',C:'#ff5fb2',G:'#ffd166'},GN=[[2,6],[8,12],[14,18]];
+let ang=0,zm=1,sel=-1,gs=-1,drag=0,lx=0,sx0=0;
+const dc=reg('dna',(o,x,w,h)=>{if(!drag&&!RM)ang+=.008;const N=SEQ.length,sp=h*.88/N,r=Math.min(w*.24,h*.2)*zm,rr=Math.min(1.3,zm)*(w<500?.9:1.1),it=[];
+for(let i=0;i<N;i++){const y=h/2+(i-(N-1)/2)*sp*zm,p=ang+i*.55,s=Math.sin(p),z=Math.cos(p);it.push({i,z,X:w/2+r*s,Y:y,b:SEQ[i],k:0},{i,z:-z,X:w/2-r*s,Y:y,b:CP[SEQ[i]],k:1})}
+const g=i=>gs>=0&&i>=GN[gs][0]&&i<=GN[gs][1];
+for(let i=0;i<N;i++){const a=it[2*i],b=it[2*i+1],m=(a.X+b.X)/2;x.globalAlpha=gs<0||g(i)?.7:.15;x.lineWidth=3;x.strokeStyle=BC[a.b];x.beginPath();x.moveTo(a.X,a.Y);x.lineTo(m,a.Y);x.stroke();x.strokeStyle=BC[b.b];x.beginPath();x.moveTo(m,a.Y);x.lineTo(b.X,b.Y);x.stroke()}
+x.globalAlpha=.4;x.strokeStyle='#cfd6ff';for(const k of[0,1]){x.beginPath();it.filter(p=>p.k==k).forEach((p,i)=>i?x.lineTo(p.X,p.Y):x.moveTo(p.X,p.Y));x.stroke()}x.globalAlpha=1;o.pts=it;
+it.slice().sort((a,b)=>a.z-b.z).forEach(p=>{const d=gs>=0&&!g(p.i),rd=(6+3*p.z)*rr;x.globalAlpha=(.55+.45*(p.z+1)/2)*(d?.3:1);x.fillStyle=BC[p.b];x.shadowColor=BC[p.b];x.shadowBlur=p.z>0?10:0;x.beginPath();x.arc(p.X,p.Y,rd,0,7);x.fill();x.shadowBlur=0;if(p.i==sel){x.strokeStyle='#fff';x.lineWidth=2;x.stroke()}if(rd>7){x.fillStyle='#02030c';x.font='600 10px Manrope';x.textAlign='center';x.fillText(p.b,p.X,p.Y+3.5)}});
+x.globalAlpha=1;x.fillStyle='#9aa4cf';x.font='12px Manrope';x.textAlign='left';x.fillText('Drag to rotate · tap a base',12,h-12)});
+function pick(e){const r=dc.c.getBoundingClientRect(),X=e.clientX-r.left,Y=e.clientY-r.top;let b=null,bd=1e9;for(const p of dc.pts||[]){const d=Math.hypot(p.X-X,p.Y-Y)-p.z*4;if(d<18&&d<bd){bd=d;b=p}}if(b){sel=b.i;const c=CP[b.b];$('#di').innerHTML=`<b class=k>${BN[b.b]} (${b.b})</b> on strand ${b.k+1}, position ${b.i+1}. It pairs with <b class=k>${BN[c]} (${c})</b> on the other strand through ${'AT'.includes(b.b)?2:3} hydrogen bonds.`}}
+dc.c.onpointerdown=e=>{drag=1;lx=sx0=e.clientX;dc.c.setPointerCapture(e.pointerId)};
+dc.c.onpointermove=e=>{if(drag){ang+=(e.clientX-lx)*.012;lx=e.clientX}};
+dc.c.onpointerup=e=>{drag=0;if(Math.abs(e.clientX-sx0)<5)pick(e)};
+dc.c.onkeydown=e=>{const k=e.key;if(k=='ArrowLeft')ang-=.2;else if(k=='ArrowRight')ang+=.2;else if(k=='+'||k=='=')zm=Math.min(1.8,zm*1.15);else if(k=='-')zm=Math.max(.6,zm/1.15);else return;e.preventDefault()};
+$('#zi').onclick=()=>zm=Math.min(1.8,zm*1.2);$('#zo').onclick=()=>zm=Math.max(.6,zm/1.2);
+$$('.gb').forEach(b=>b.onclick=()=>{const v=+b.dataset.g;gs=v==gs?-1:v;$$('.gb').forEach(c=>c.classList.toggle('on',+c.dataset.g==gs));[0,1,2].forEach(i=>$('#b'+i).setAttribute('opacity',gs<0?.35:i==gs?1:.12));$('#di').innerHTML=gs<0?'Select a gene or tap a base in the helix.':`<b class=k>Gene ${gs+1}</b> covers base pairs ${GN[gs][0]+1}–${GN[gs][1]+1} of this segment and sits at the glowing band on the chromosome. A gene is a DNA sequence that carries instructions for a protein or RNA.`});
+const H=[['Nucleotide','The building block of DNA: a phosphate, a deoxyribose sugar and one base (A, T, C or G).'],['DNA','Two strands of nucleotides twisted into a double helix. A pairs with T and C pairs with G, so each strand can serve as a template for the other.'],['Gene','A DNA sequence carrying the instructions for a protein or functional RNA. Genes contribute to inherited characteristics.'],['Chromosome','One very long DNA molecule wound with proteins into a compact structure. Human body cells have 46.'],['Genome','All the genetic information of an organism: every chromosome and every gene. Biological identity arises from the genome interacting with the environment.']];
+const hb=$('#hb');hb.innerHTML=H.map((h,i)=>`<button data-i=${i}>${h[0]}</button>`).join('');
+hb.onclick=e=>{const i=e.target.dataset.i;if(i==null)return;[...hb.children].forEach(b=>b.classList.toggle('on',b.dataset.i==i));$('#ht').textContent=H[i][1]};hb.firstChild.click();
+/* mitosis model */
+const CH=[['#4de8ff',.2,-.35,-.22,-.6],['#ff5fb2',.17,.3,-.28,-.2],['#9b7bff',.15,-.25,.3,.2],['#ffd166',.13,.34,.26,.6]];
+const KF={c:[.6,1,1,1,.5,.25],e:[.9,0,0,0,0,0],f:[0,0,0,0,1,1],p:[.35,1,1,1,.4,.1],a:[0,.7,1,1,1,1],s:[0,0,0,.55,1,1],n:[0,0,0,0,.15,1],l:[0,0,0,.25,.5,.6],o:[.55,.78,.84,.86,.86,.86]};
+const kf=(k,s)=>{const i=Math.min(4,Math.floor(s));return L(KF[k][i],KF[k][i+1],s-i)};
+function cell(x,w,h,s,o){const u=Math.min(w/1.7,h)/2*.92,cx=w/2,cy=h/2,c=kf('c',s),e=kf('e',s),f=kf('f',s),sp=kf('p',s),al=kf('a',s),sep=kf('s',s),pn=kf('n',s)*.97,el=kf('l',s),rx=u*1.3*(1+el*.55),ry=u*(1-el*.1),pol=rx*kf('o',s),sh=u*.95*(1+el*.55);
+const wf=dx=>1-pn*Math.exp(-((dx/(rx*.2))**2));
+x.beginPath();for(let t=0;t<=6.3;t+=.1){const dx=rx*Math.cos(t),dy=ry*Math.sin(t)*wf(dx);t?x.lineTo(cx+dx,cy+dy):x.moveTo(cx+dx,cy+dy)}x.closePath();
+const g=x.createRadialGradient(cx,cy,u*.1,cx,cy,rx);g.addColorStop(0,'rgba(70,110,255,.16)');g.addColorStop(1,'rgba(20,30,90,.55)');x.fillStyle=g;x.fill();x.strokeStyle='#7fe9ff';x.lineWidth=2.5;x.shadowColor='#4de8ff';x.shadowBlur=14;x.stroke();x.shadowBlur=0;
+for(let i=0;i<14;i++){const a=i*2.4,r=(.3+(i*37%10)/16)*.85,px=cx+Math.cos(a)*rx*r,py=cy+Math.sin(a)*ry*r;if(Math.abs(px-cx)<rx*.12&&pn>.3)continue;x.fillStyle='rgba(255,95,178,.16)';x.beginPath();x.ellipse(px,py,5,3,a,0,7);x.fill()}
+if(e>.02){x.setLineDash(e<.8?[5,7]:[]);x.strokeStyle=`rgba(210,190,255,${e})`;x.lineWidth=3;x.fillStyle=`rgba(155,123,255,${.13*e})`;x.beginPath();x.arc(cx,cy,u*.66,0,7);x.fill();x.stroke();x.setLineDash([])}
+if(f>.02)for(const k of[-1,1]){x.strokeStyle=`rgba(210,190,255,${f})`;x.lineWidth=3;x.fillStyle=`rgba(155,123,255,${.13*f})`;x.beginPath();x.arc(cx+k*sep*sh,cy,u*.5*f+u*.1,0,7);x.fill();x.stroke()}
+const Q=CH.map(([col,l,sx,sy,ey])=>({col,Lc:l*u*.8,px:cx+L(sx*u*(1+.9*K(s)),0,al),py:cy+L(sy*u*(1+.5*K(s)),ey*u,al)}));
+if(sp>.02){for(const k of[-1,1]){const X0=cx+k*pol;x.strokeStyle=`rgba(120,230,255,${sp*.5})`;x.lineWidth=1.1;for(const p of Q){const tx=p.px+k*sep*sh,t=1-e*.45;x.beginPath();x.moveTo(X0,cy);x.lineTo(X0+(tx-X0)*t,cy+(p.py-cy)*t);x.stroke()}
+x.strokeStyle=`rgba(120,230,255,${sp*.25})`;for(let a=-.9;a<1;a+=.45){const A=k>0?a:Math.PI+a;x.beginPath();x.moveTo(X0,cy);x.lineTo(X0+Math.cos(A)*u*.28,cy+Math.sin(A)*u*.28);x.stroke()}}}
+for(const k of[-1,1]){x.fillStyle='#ffb3e6';x.shadowColor='#ff5fb2';x.shadowBlur=12;x.beginPath();x.arc(cx+k*pol,cy,u*.045,0,7);x.fill();x.shadowBlur=0}
+x.lineCap=x.lineJoin='round';
+Q.forEach(p=>{for(const k of[-1,1]){const X=p.px+k*sep*sh,ex=X+k*(p.Lc*.3*(1-sep)-p.Lc*.75*sep);x.globalAlpha=L(.4,1,c);x.strokeStyle=p.col;x.lineWidth=u*.05*(.55+.45*c);x.shadowColor=p.col;x.shadowBlur=8;x.beginPath();x.moveTo(ex,p.py-p.Lc);x.lineTo(X,p.py);x.lineTo(ex,p.py+p.Lc);x.stroke();x.shadowBlur=0;x.fillStyle='#fff';x.globalAlpha=.9*(c>.8);x.beginPath();x.arc(X,p.py,u*.02,0,7);x.fill()}x.globalAlpha=1});
+if(o){const dx=rx*.5;o.hs=[{id:'chromosome',x:Q[0].px+sep*sh,y:Q[0].py,r:20},{id:'centrosome',x:cx-pol,y:cy,r:18},{id:'spindle',x:(cx-pol+Q[1].px-sep*sh)/2,y:(cy+Q[1].py)/2,r:18},{id:'membrane',x:cx+dx,y:cy-ry*.866*wf(dx),r:18}];x.strokeStyle='#ffffff88';x.lineWidth=1.5;o.hs.forEach(q=>{x.beginPath();x.arc(q.x,q.y,15+3*Math.sin(T*3),0,7);x.stroke()})}}
+const ST=[['Prophase','Chromatin condenses into visible chromosomes, each made of two sister chromatids joined at a centromere. The centrosomes move apart and the spindle starts to form.'],['Prometaphase','The nuclear envelope breaks down. Spindle microtubules attach to kinetochores at the centromeres and move the chromosomes toward the middle.'],['Metaphase','Chromosomes line up on the metaphase plate at the cell’s equator. Each sister chromatid is attached to a spindle pole.'],['Anaphase','The centromeres split. Sister chromatids, now separate chromosomes, are pulled to opposite poles and the cell elongates.'],['Telophase','Chromosomes reach the poles and decondense. A nuclear envelope re-forms around each set and the spindle disassembles. Nuclear division is complete.'],['Cytokinesis','The cytoplasm divides. In animal cells a contractile ring pinches the membrane, producing two daughter cells. This is separate from nuclear division.']];
+const HT={chromosome:'Chromosome: one long DNA molecule packaged with proteins. After S phase it has two identical sister chromatids; the white dot is the kinetochore at the centromere.',centrosome:'Centrosome: organises microtubules and marks a spindle pole.',spindle:'Spindle fibre: a microtubule linking a pole to a kinetochore; it moves the chromosomes.',membrane:'Plasma membrane: the cell’s boundary. In cytokinesis it is pinched inward until two cells form.'};
+let ms=0,mp=0,tg=null,li=-1,cb=3;
+$('#cs').innerHTML=ST.map((s,i)=>`<option value=${i}${i==3?' selected':''}>${s[0]}</option>`).join('');$('#chips').innerHTML=ST.map((s,i)=>`<button data-i=${i}>${s[0]}</button>`).join('');
+const m1=reg('mc',(o,x,w,h)=>{if(tg!=null){ms+=(tg-ms)*.12;if(Math.abs(tg-ms)<.01){ms=tg;tg=null}}else if(mp&&!RM){ms+=.006;if(ms>=5){ms=5;mp=0;$('#py').textContent='Play'}}else if(mp){mp=0;tg=Math.min(5,Math.round(ms)+1)}
+$('#ts').value=ms*100;cell(x,w,h,ms,o);const i=Math.round(ms);if(i!=li){li=i;$('#sn').textContent=ST[i][0];$('#sd').textContent=ST[i][1];$('#cap1').textContent=ST[i][0];$$('#chips button').forEach((b,j)=>b.classList.toggle('on',j==i))}});
+reg('mc2',(o,x,w,h)=>cell(x,w,h,cb));$('#cap2').textContent=ST[cb][0];
+$('#cs').onchange=e=>{cb=+e.target.value;$('#cap2').textContent=ST[cb][0]};
+$('#cmpb').onclick=e=>e.target.classList.toggle('on',$('#mw').classList.toggle('c2'));
+$('#chips').onclick=e=>{const i=e.target.dataset.i;if(i!=null){mp=0;tg=+i}};
+$('#ts').oninput=e=>{mp=0;tg=null;ms=e.target.value/100};
+$('#py').onclick=()=>{if(ms>=5)ms=0;mp=!mp;tg=null;$('#py').textContent=mp?'Pause':'Play'};
+$('#rs').onclick=()=>{ms=0;tg=null;mp=1;$('#py').textContent='Pause'};
+$('#nx0').onclick=()=>{mp=0;tg=Math.min(5,Math.floor(ms+.01)+1)};$('#pv').onclick=()=>{mp=0;tg=Math.max(0,Math.ceil(ms-.01)-1)};
+const mcv=m1.c;let d0=null,m0=0,mv=0;const hit=e=>{const r=mcv.getBoundingClientRect(),X=e.clientX-r.left,Y=e.clientY-r.top;return m1.hs.find(q=>Math.hypot(q.x-X,q.y-Y)<q.r+8)};
+mcv.onpointerdown=e=>{d0=e.clientX;m0=ms;mv=0;mcv.setPointerCapture(e.pointerId)};
+mcv.onpointermove=e=>{if(d0==null){mcv.style.cursor=hit(e)?'pointer':'default';return}const d=e.clientX-d0;if(Math.abs(d)>8){mv=1;mp=0;tg=null;ms=K(m0-d/(m1.w*.2),0,5)}};
+mcv.onpointerup=e=>{d0=null;if(!mv){const q=hit(e);if(q)$('#hi').textContent=HT[q.id]}};
+mcv.onkeydown=e=>{if(e.key=='ArrowRight'){mp=0;tg=Math.min(5,Math.round(ms)+1)}else if(e.key=='ArrowLeft'){mp=0;tg=Math.max(0,Math.round(ms)-1)}else return;e.preventDefault()};
+/* chapter 2 */
+const PH=[{n:'G1',f:.4,c:'#4de8ff',w:'The cell grows, makes proteins and organelles, and carries out its normal functions.',y:'It gathers the mass and energy needed before copying its DNA.',d:'2C. Each chromosome is one DNA molecule (one chromatid).'},{n:'S',f:.3,c:'#9b7bff',w:'DNA replication: every chromosome is copied, giving two identical sister chromatids.',y:'Each daughter cell will need a full copy of the genome. Copying happens here, not during mitosis.',d:'2C rising to 4C. Chromosomes gain a second sister chromatid.'},{n:'G2',f:.15,c:'#ff5fb2',w:'The cell keeps growing, checks the copied DNA and makes the proteins needed for division.',y:'It helps prevent damaged or incompletely copied DNA from entering mitosis.',d:'4C. Each chromosome has two sister chromatids.'},{n:'M',f:.15,c:'#ffd166',w:'Mitosis (nuclear division) followed by cytokinesis (division of the cytoplasm).',y:'It shares the copied chromosomes equally between two daughter cells.',d:'4C falling to 2C per daughter cell. Sister chromatids separate.'}];
+const C0=2*Math.PI*80,rg=$('#ring');let acc=0,pi=0,cp=.2,cpl=0;
+rg.innerHTML=PH.map((p,i)=>{const l=p.f*C0,s=`<circle class=ar data-i=${i} tabindex=0 role=button aria-label="${p.n} phase" cx=100 cy=100 r=80 fill=none stroke="${p.c}" stroke-width=16 stroke-dasharray="${l-3} ${C0}" stroke-dashoffset=${-acc} transform="rotate(-90 100 100)"/>`;acc+=l;return s}).join('')+'<circle id=mk r=7 fill=#fff /><text id=cn x=100 y=108 text-anchor=middle fill=#fff font-size=26 font-family="Cormorant Garamond,serif"></text>';
+function mark(){const a=cp*2*Math.PI-Math.PI/2;$('#mk').setAttribute('cx',100+80*Math.cos(a));$('#mk').setAttribute('cy',100+80*Math.sin(a))}
+function selP(i){pi=i;$$('.ar').forEach((a,j)=>a.setAttribute('stroke-width',j==i?24:16));const p=PH[i];$('#cn').textContent=p.n;$('#pt').innerHTML=`<h3>${p.n} ${i==3?'phase: mitosis':'phase'}</h3><p><b class=k>What happens.</b> ${p.w}</p><p><b class=k>Why it matters.</b> ${p.y}</p><p><b class=k>DNA content.</b> ${p.d}</p>`}
+function ringSel(e){const i=e.target.dataset&&e.target.dataset.i;if(i==null)return;cpl=0;$('#pp').textContent='Play cycle';selP(+i);cp=PH.slice(0,+i).reduce((a,p)=>a+p.f,0)+PH[+i].f/2;mark()}
+rg.onclick=ringSel;rg.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();ringSel(e)}};
+$('#pp').onclick=e=>{cpl=!cpl;e.target.textContent=cpl?'Pause cycle':'Play cycle'};
+setInterval(()=>{if(!cpl)return;cp=(cp+.0025)%1;mark();let a=0;for(let i=0;i<4;i++){a+=PH[i].f;if(cp<a){if(i!=pi)selP(i);break}}},40);
+selP(0);mark();
+function squig(x,cx,cy,r,two){const C=['#4de8ff','#ff5fb2','#9b7bff','#ffd166'];for(let i=0;i<4;i++){const a=i*1.6+.5,bx=cx+Math.cos(a)*r*.4,by=cy+Math.sin(a)*r*.4;for(let k=0;k<(two?2:1);k++){if(two==2&&k&&i>1)continue;x.strokeStyle=C[i];x.lineWidth=2.4;x.beginPath();for(let j=-6;j<=6;j++){const px=bx+j*r*.045+k*4,py=by+Math.sin(j*.9+i+(RM?0:T*1.2))*r*.07+j*r*.03;j<-5?x.moveTo(px,py):x.lineTo(px,py)}x.stroke()}}}
+reg('pl',(o,x,w,h)=>{if(pi==3){cell(x,w,h,2);return}const cx=w/2,cy=h/2,rr=Math.min(w,h)/2*[.7,.78,.92][pi];x.fillStyle='rgba(70,110,255,.15)';x.strokeStyle='#7fe9ff';x.lineWidth=2.5;x.shadowColor='#4de8ff';x.shadowBlur=14;x.beginPath();x.arc(cx,cy,rr,0,7);x.fill();x.stroke();x.shadowBlur=0;x.fillStyle='rgba(155,123,255,.2)';x.strokeStyle='#b9a5ff';x.beginPath();x.arc(cx,cy,rr*.55,0,7);x.fill();x.stroke();squig(x,cx,cy,rr,[0,2,1][pi])});
+let rp=0,rpa=!RM;const dot=(x,X,Y,c,a=1)=>{x.globalAlpha=a;x.fillStyle=c;x.beginPath();x.arc(X,Y,3,0,7);x.fill();x.globalAlpha=1},ln=(x,X,a,b)=>{x.beginPath();x.moveTo(X,a);x.lineTo(X,b);x.stroke()};
+if(RM)rp=.6;
+reg('rep',(o,x,w,h)=>{if(rpa){rp+=.0035;if(rp>1.1)rp=0;$('#rp').value=K(rp)*100}const f=K(rp)*w*1.05,c=h/2,A=h*.07,off=RM?0:T*40;
+for(let px=0;px<w;px+=7){const th=(px+off)*.07,F=K((f-px)/70),ct=c-h*.27*F,cb2=c+h*.27*F,s=Math.sin(th)*A,yA=ct+s,yB=cb2-s,yA2=ct-s,yB2=cb2+s;
+if(Math.round(px/7)%2==0){x.strokeStyle='#cfd6ff';x.lineWidth=1.2;x.globalAlpha=(1-F)*.5;ln(x,px,yA,yB);x.globalAlpha=F*.5;ln(x,px,yA,yA2);ln(x,px,yB,yB2);x.globalAlpha=1}
+dot(x,px,yA,'#4de8ff');dot(x,px,yB,'#ff5fb2');if(F>0){dot(x,px,yA2,'#ffd166',F);dot(x,px,yB2,'#9ef0b4',F)}}});
+$('#rp').oninput=e=>{rpa=false;rp=e.target.value/100};
+/* chapter 4 */
+const CC=['#4de8ff','#ff5fb2','#9b7bff','#ffd166'],PS=[[52,56],[108,56],[52,106],[108,106]];
+const cellSVG=d=>`<svg viewBox="0 0 160 160" role=img aria-label="Cell with 4 chromosomes"><circle cx=80 cy=80 r=74 fill="rgba(70,110,255,.12)" stroke="#7fe9ff" stroke-width=3 />${PS.map(([x,y],i)=>`<path d="${d?`M${x-7} ${y-16}L${x+7} ${y+16}M${x+7} ${y-16}L${x-7} ${y+16}`:`M${x} ${y-16}V${y+16}`}" stroke="${CC[i]}" stroke-width=6 stroke-linecap=round fill=none />`).join('')}</svg>`;
+const CO=[['Parent cell (G1)',[0],'4','2C','The parent cell’s genetic information: one DNA molecule per chromosome.'],['After S phase',[1],'4 (8 chromatids)','4C','Replication has made two identical sister chromatids per chromosome.'],['After mitosis',[0,0],'4 in each daughter','2C each','Each daughter cell receives one complete, identical set of chromosomes.']];
+function showC(i){const c=CO[i];$$('#ctb button').forEach((b,j)=>b.classList.toggle('on',j==i));$('#ct').innerHTML=c[1].map(cellSVG).join('');$('#cst').innerHTML=`<div class=g>Chromosomes<b>${c[2]}</b></div><div class=g>DNA per cell<b>${c[3]}</b></div><div class=g>Genetic information<b>${i<2?'Parent':'Identical to parent'}</b></div>`;$('#cd').textContent=c[4]}
+$('#ctb').innerHTML=CO.map((c,i)=>`<button data-i=${i}>${c[0]}</button>`).join('');$('#ctb').onclick=e=>e.target.dataset.i!=null&&showC(+e.target.dataset.i);showC(0);
+/* quiz */
+const Q=[['Biological identity is largely encoded in…',['An organism’s genetic information (DNA)','The size of its cells','The number of organelles','Its cytoplasm'],0,'Genetic information stored in DNA is inherited and guides an organism’s features, together with the environment.'],
+['Which base pairs with adenine (A) in DNA?',['Cytosine','Guanine','Thymine','Uracil'],2,'A pairs with T and C pairs with G. RNA uses uracil instead of thymine.'],
+['What is a gene?',['A whole chromosome','A DNA sequence carrying instructions for a protein or RNA','A single nucleotide','A spindle fibre'],1,'Genes are specific sequences within DNA; one chromosome contains many genes.'],
+['A chromosome is best described as…',['Protein only','A cell organelle','DNA organised with proteins','A piece of membrane'],2,'Chromosomes are long DNA molecules packaged with proteins such as histones.'],
+['In which phase is DNA replicated?',['G1','S','Prophase','Cytokinesis'],1,'S stands for synthesis. DNA is copied during interphase, before mitosis begins.'],
+['Which order is correct?',['G1 → G2 → S → M','S → G1 → M → G2','G1 → S → G2 → M','M → S → G1 → G2'],2,'Growth, DNA copying, preparation, then division.'],
+['Sister chromatids are…',['Two different chromosomes','Identical copies joined at a centromere','Spindle fibres','Parts of the nuclear envelope'],1,'Replication produces two identical DNA copies that stay attached until anaphase.'],
+['Chromosomes align at the cell’s equator during…',['Prophase','Metaphase','Anaphase','Telophase'],1,'Alignment helps ensure each daughter cell receives one copy of every chromosome.'],
+['Cytokinesis is…',['Nuclear division','DNA replication','Division of the cytoplasm, separate from nuclear division','Chromosome condensation'],2,'Mitosis divides the nucleus; cytokinesis divides the rest of the cell.'],
+['A human body cell with 46 chromosomes divides by mitosis. Each daughter cell has…',['23 chromosomes','46 chromosomes','92 chromosomes','Different numbers in each'],1,'After chromatids separate, each daughter cell gets 46 chromosomes, the same as the parent.']];
+let qi=0,sc=0,qa=0;
+function qz(){const z=$('#qz');if(qi>=10){z.innerHTML=`<div class=ach><div class=rings><i></i><i></i><i></i></div><h3>${sc} / 10</h3><p style="margin:auto">${sc==10?'Perfect. You understand the living cell.':sc>6?'Excellent work.':'Good start. Revisit the chapters and try again.'}</p><div class=tabs style="justify-content:center"><button id=rt>Try again</button></div></div>`;$('#rt').onclick=()=>{qi=sc=0;qz()};return}
+const [q,o,a,ex]=Q[qi];qa=0;z.innerHTML=`<div class=pb><i style="width:${qi*10}%"></i></div><p>Question ${qi+1} of 10 · Score ${sc}</p><h3>${q}</h3><div class=opts>${o.map((t,i)=>`<button data-i=${i}>${t}</button>`).join('')}</div><div id=fb aria-live=polite></div>`;
+const bs=[...z.querySelectorAll('.opts button')];bs.forEach(b=>b.onclick=()=>{if(qa)return;qa=1;const i=+b.dataset.i;sc+=i==a;bs.forEach((y,j)=>y.classList.add(j==a?'ok':j==i?'bad':'dim'));$('#fb').innerHTML=`<p><b class=k>${i==a?'Correct.':'Not quite.'} Why is this correct?</b> ${ex}</p><button id=qn>${qi<9?'Next question':'See result'}</button>`;$('#qn').onclick=()=>{qi++;qz()}})}
+qz();
+let cs=[0,1,2,3,4,5].sort(()=>Math.random()-.5),cn=0,cr=0,cur=cs[0],ca=0;
+reg('cc',(o,x,w,h)=>cell(x,w,h,cur));
+function ch(){const d=$('#co');if(cn>=5){d.innerHTML=`<h3>${cr} / 5 correct</h3><button id=cg>Play again</button>`;$('#cg').onclick=()=>{cn=cr=0;cs.sort(()=>Math.random()-.5);ch()};return}cur=cs[cn];ca=0;d.innerHTML=`<p>Round ${cn+1} of 5 · Score ${cr}. Which stage is this?</p><div class=tabs>${ST.map((s,i)=>`<button data-i=${i}>${s[0]}</button>`).join('')}</div><div id=cf aria-live=polite></div>`;
+d.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{if(ca)return;ca=1;const ok=+b.dataset.i==cur;cr+=ok;b.classList.add(ok?'ok':'bad');$('#cf').innerHTML=`<p><b class=k>${ok?'Correct.':'It was '+ST[cur][0]+'.'}</b> ${ST[cur][1]}</p><button id=cx>Next round</button>`;$('#cx').onclick=()=>{cn++;ch()}})}
+ch();
+</script></body></html>
